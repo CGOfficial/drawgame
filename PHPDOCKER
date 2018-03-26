@@ -1,0 +1,7 @@
+FROM php:7.2.3-apache-stretch
+
+RUN docker-php-ext-install mysqli \
+    && apache2ctl restart           \
+    && curl -O https://pecl.php.net/get/xdebug-2.6.0.tgz \
+    && pecl install ./xdebug-2.6.0.tgz    \
+    && docker-php-ext-enable xdebug

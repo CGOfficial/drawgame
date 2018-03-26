@@ -1,16 +1,26 @@
-version: 3
+version: '3'
 
-drawgame:
-  server:
-    image: php:7.2.3-apache-stretch
+services:
+  apache:
+    build:
+      context: .
+      dockerfile: './PHPDOCKER'
     ports:
-      - 8080:80
+      - '8080:80'
     volumes:
-      - ./src:/var/www/html/api
+      - './src:/var/www/html/api'
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    dns: '8.8.8.8'
+    environment:
+#    remote_connect_back instead of remote_host is nicer
+      XDEBUG_CONFIG: "idekey=jetdebug remote_enable=On remote_connect_back=1"
   mysql:
-    image: "mysql:latest"
+    image: 'mysql:latest'
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "."
+      MYSQL_ROOT_PASSWORD: '.'
     ports:
-      - "3306:3306"
+      - '3306:3306'
