@@ -11,13 +11,39 @@ namespace DrawGame;
 
 class Account
 {
-    private $account;
+    private $account;   //账号
     private $name;
-    private $password;
-    private $gender;
-    private $signup_date;
-    private $lastSeen;
+    private $password;   //密码
+    private $gender;    //性别
+    private $signup_date;   //注册日期
+    private $quiz;          //密保问题
+    private $answer;        //密保答案
     private $state;
+
+    /**
+     * Account constructor.
+     * @param $account
+     * @param $name
+     * @param $password
+     * @param $gender
+     * @param $signup_date
+     * @param $quiz
+     * @param $answer
+     * @param $lastSeen
+     * @param $state
+     */
+    public function __construct($account, $name, $password, $gender, $signup_date, $quiz, $answer, $lastSeen, $state)
+    {
+        $this->account = $account;
+        $this->name = $name;
+        $this->password = $password;
+        $this->gender = $gender;
+        $this->signup_date = $signup_date;
+        $this->quiz = $quiz;
+        $this->answer = $answer;
+        $this->lastSeen = $lastSeen;
+        $this->state = $state;
+    }
 
     /**
      * @return mixed
@@ -113,6 +139,38 @@ class Account
     public function setSignupDate($signup_date)
     {
         $this->signup_date = $signup_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getQuiz()
+    {
+        return $this->quiz;
+    }
+
+    /**
+     * @param mixed $quiz
+     */
+    public function setQuiz($quiz)
+    {
+        $this->quiz = $quiz;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnswer()
+    {
+        return $this->answer;
+    }
+
+    /**
+     * @param mixed $answer
+     */
+    public function setAnswer($answer)
+    {
+        $this->answer = $answer;
     }
 
     /**
