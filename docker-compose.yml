@@ -4,7 +4,7 @@ services:
   apache:
     build:
       context: .
-      dockerfile: './PHPDOCKER'
+      dockerfile: './PHPDOCKER.debug.docker'
     ports:
       - '8080:80'
     volumes:
@@ -15,8 +15,9 @@ services:
       - mysql
     dns: '8.8.8.8'
     environment:
+      - TZ=Asia/Shanghai
 #    remote_connect_back instead of remote_host is nicer
-      XDEBUG_CONFIG: "idekey=jetdebug remote_enable=On remote_connect_back=1"
+#      XDEBUG_CONFIG: "idekey=jetdebug remote_enable=On remote_connect_back=1"
   mysql:
     image: 'mysql:latest'
     restart: always

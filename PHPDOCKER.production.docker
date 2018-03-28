@@ -1,0 +1,5 @@
+FROM php:7.2.3-apache-stretch
+
+RUN docker-php-ext-install mysqli \
+    && apache2ctl restart
+

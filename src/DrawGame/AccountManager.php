@@ -7,8 +7,8 @@
  */
 
 namespace DrawGame;
-require_once "utils/Dbtool.php";
-require_once 'config.php';
+require_once realpath(__DIR__ . "/utils/Dbtool.php");
+require_once realpath(__DIR__.'/config.php');
 use DrawGame\utils\Dbtool;
 
 
@@ -30,10 +30,22 @@ class AccountManager
         }
     }
 
-    function login($account)
+    /**
+     * @param string
+     * @param string
+     * @return int define in config.php
+     */
+    function login($account, $pwd)
     {
-        $dbtool = $this->dbtool;
+        if (isset($account) and $account !== null) {
 
+            $dbtool = $this->dbtool;
+
+            $result = $dbtool->doWithInjectProtection(/** @lang MySQL */
+                "SELECT * FROM tb_accounts where uaccount=?", 's', [&$account]);
+
+            return $result;
+        }
 
     }
 
@@ -53,8 +65,9 @@ class AccountManager
 
             if($result === 1062){
                 return ACCOUNT_SIGN_UP_DUPLICATE_ACCOUNT;
+            } else {
+                return ACCOUNT_SIGN_UP_SUCCESS;
             }
-            var_dump($result);
         }
     }
 }

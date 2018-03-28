@@ -9,15 +9,11 @@
 
 namespace DrawGame\utils;
 
+require_once realpath(__DIR__ . "/../config.php");
+
 
 class Dbtool
 {
-    private const DB = array(
-        'host' => 'drawgame_mysql_1',
-        'user' => 'root',
-        'password' => '.',
-        'database' => 'db_drawgame',
-        'port' => '3306');
 
     /**
      * @var \mysqli
@@ -27,20 +23,18 @@ class Dbtool
 
     public function connect(): bool
     {
-        $DB = Dbtool::DB;
-
-        $this->mysql = new \mysqli($DB['host'], $DB['user'], $DB['password']);
+        $this->mysql = new \mysqli(DB['host'], DB['user'], DB['password']);
 
         $result = $this->mysql->query(/** @lang SQL */
-            "SHOW DATABASES LIKE '" . $DB['database'] . "'");
+            "SHOW DATABASES LIKE '" . DB['database'] . "'");
 
         if ($result->num_rows > 0) {
 //        echo 'database does exist';
-            $this->mysql->select_db($DB['database']);
+            $this->mysql->select_db(DB['database']);
         } else {
 //        echo 'database doesn\'t exist';
             $result = $this->mysql->query(/** @lang SQL */
-                "CREATE DATABASE " . $DB['database']);
+                "CREATE DATABASE " . DB['database']);
             if (!$result) throw new \Exception('创建数据库失败！');
             return false;
         }
@@ -71,10 +65,10 @@ class Dbtool
             }
 
             while (($field = $meta->fetch_field()) !== false) {
-                $params[] = &$row[$field->name];
+                $resultTemp[] = &$row[$field->name];
             }
 
-            $stmt->bind_result(...$params);
+            $stmt->bind_result(...$resultTemp);
 
             while ($stmt->fetch()){
                 array_push($result, $row);
@@ -86,21 +80,21 @@ class Dbtool
         return false;
     }
 
-    public function query($sql)
-    {
-        $mysql = $this->mysql;
-        $st = $mysql->prepare($sql);
-        $st->execute();
-        $meta = $st->result_metadata();
-        while (($field = $meta->fetch_field()) !== false) {
-            $params[] = &$row[$field->name];
-        }
-        $st->bind_result(...$params);
-
-
-        $result = $st->get_result();
-        var_dump($result);
-    }
+//    public function query($sql)
+//    {
+//        $mysql = $this->mysql;
+//        $st = $mysql->prepare($sql);
+//        $st->execute();
+//        $meta = $st->result_metadata();
+//        while (($field = $meta->fetch_field()) !== false) {
+//            $params[] = &$row[$field->name];
+//        }
+//        $st->bind_result(...$params);
+//
+//
+//        $result = $st->get_result();
+//        var_dump($result);
+//    }
 
     /**
      * 初始化所有表
@@ -113,7 +107,7 @@ class Dbtool
             "
             CREATE TABLE IF NOT EXISTS tb_accounts (
               uid BIGINT AUTO_INCREMENT PRIMARY KEY ,
-              uaccount VARCHAR(30),
+              uaccount VARCHAR(30) unique,
               upwd VARCHAR(64),
               uname VARCHAR(128),
               ugender VARCHAR(8),

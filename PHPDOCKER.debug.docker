@@ -5,3 +5,6 @@ RUN docker-php-ext-install mysqli \
     && curl -O https://pecl.php.net/get/xdebug-2.6.0.tgz \
     && pecl install ./xdebug-2.6.0.tgz    \
     && docker-php-ext-enable xdebug
+
+
+ENV XDEBUG_CONFIG="idekey=jetdebug remote_enable=On remote_connect_back=1"
